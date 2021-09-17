@@ -30,7 +30,7 @@ namespace SnakeTest
         void GenTest()
         {
             var snake = generator.GenSnake();
-            Assert.All(snake, point =>
+            Assert.All(snake.Points, point =>
             {
                 Assert.True(point[0] >= 0 && point[0] < r && point[1] >= 0 && point[1] < c,
                     $"Got ({point[0]},{point[1]})");
