@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Snake
 {
-    public enum Direction
+    public class FoodObj : GameObj
     {
-        Up = 1, Down, Left, Right
+        public FoodObj(List<int[]> points) : base(points) { }
     }
 }

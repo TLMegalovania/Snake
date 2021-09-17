@@ -8,15 +8,15 @@ namespace Snake
 {
     class FoodGenerator
     {
-        Random rand;
-        int x, y;
+        readonly Random rand;
+        readonly int x, y;
         public FoodGenerator(int rowCount, int columnCount)
         {
             rand = new Random();
-            this.x = rowCount;
-            this.y = columnCount;
+            x = rowCount;
+            y = columnCount;
         }
-        public int[] GenFood() => new int[2] { rand.Next(x), rand.Next(y) };
+        public FoodObj GenFood() => new(new() { new int[2] { rand.Next(x), rand.Next(y) } });
 
     }
 }

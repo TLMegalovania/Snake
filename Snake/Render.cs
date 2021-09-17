@@ -10,9 +10,8 @@ using System.Windows.Shapes;
 
 namespace Snake
 {
-    class Render
+    public class Render
     {
-        Grid grid;
         Rectangle[,] elements;
         Dictionary<int, Brush> brushMap = new Dictionary<int, Brush>()
         {
@@ -22,7 +21,6 @@ namespace Snake
         };
         public Render(Grid grid,int[,] board)
         {
-            this.grid = grid;
             int row = grid.RowDefinitions.Count, col = grid.ColumnDefinitions.Count;
             elements = new Rectangle[row, col];
             for(int i = 0; i < row; i++)

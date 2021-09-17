@@ -9,21 +9,21 @@ namespace Snake
 {
     public class SnakeGenerator
     {
-        Random rand;
-        int x, y;
+        readonly Random rand;
+        readonly int x, y;
         public SnakeGenerator(int rowCount,int columnCount)
         {
             rand = new Random();
-            this.x = rowCount - 1;
-            this.y = columnCount - 1;
+            x = rowCount - 1;
+            y = columnCount - 1;
         }
-        public List<int[]> GenSnake()
+        public SnakeObj GenSnake()
         {
-            int[] ranPoint = new int[2] { rand.Next(1, x), rand.Next(1, y) };
+            int[] ranPoint = new int[3] { rand.Next(1, x), rand.Next(1, y) ,1};
             var res = new List<int[]>() { (int[])ranPoint.Clone(), (int[])ranPoint.Clone(), (int[])ranPoint.Clone() };
             res[0][0]--;
             res[2][0]++;
-            return res;
+            return new(res);
         }
     }
 }

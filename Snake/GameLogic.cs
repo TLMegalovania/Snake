@@ -10,16 +10,10 @@ namespace Snake
     {
         SnakeGenerator sgen;
         FoodGenerator fgen;
+        SnakeObj snakeObj;
+        FoodObj foodObj;
         int[,] board;
-        int[] head, tail;
         int row, column;
-        Dictionary<Direction, Func<int[], int[]>> moveMap = new Dictionary<Direction, Func<int[], int[]>>()
-        {
-            {Direction.Down,point=>new int[2]{point[0]+1,point[1] } },
-            {Direction.Left,point=>new int[2]{point[0],point[1]-1 } },
-            {Direction.Right,point=>new int[2]{point[0],point[1]+1 } },
-            {Direction.Up,point=>new int[2]{point[0]-1,point[1] } }
-        };
         public GameLogic(int rowCount, int columnCount)
         {
             row = rowCount;
@@ -27,25 +21,23 @@ namespace Snake
             board = new int[rowCount, columnCount];
             sgen = new SnakeGenerator(rowCount, columnCount);
             fgen = new FoodGenerator(rowCount, columnCount);
-            var snake = sgen.GenSnake();
-            head = snake[0];
-            tail = snake[2];
-            foreach (int[] point in snake)
+            snakeObj = sgen.GenSnake();
+            foreach (int[] point in snakeObj.Points)
             {
                 board[point[0], point[1]] = 1;
             }
-            int[] food = ValidFood();
-            board[food[0], food[1]] = -1;
+            foodObj = ValidFood();
+            board[foodObj.Head[0], foodObj.Head[1]] = -1;
         }
-        int[] ValidFood()
+        FoodObj ValidFood()
         {
-            int[] food;
+            FoodObj food;
             int times = 0;
             do
             {
                 food = fgen.GenFood();
                 times++;
-            } while (board[food[0], food[1]] != 0 && times < 20);
+            } while (board[food.Head[0], food.Head[1]] != 0 && times < 20);
             if (times == 20)
             {
                 for (int i = 0; i < row; i++)
@@ -54,7 +46,7 @@ namespace Snake
                     {
                         if (board[i, j] == 0)
                         {
-                            return new int[] { i, j };
+                            return new(new() { new int[] { i, j } });
                         }
                     }
                 }
@@ -65,33 +57,40 @@ namespace Snake
         {
             var res = new List<int[]>();
             changedPoints = res.AsReadOnly();
-            int[] newHead = moveMap[direction](head);
-            if (OutOfBound(newHead) || InSnake(newHead)) return false;
-            if (InEmpty(newHead))
+            var oldHead = new int[2] { snakeObj.Head[0], snakeObj.Head[1] };
+            snakeObj.MoveHead(direction);
+            var head = snakeObj.Head;
+            var tail = snakeObj.Tail;
+            if (OutOfBound(head) || InSnake(head))
+            {
+                return false;
+            }
+            if (InEmpty(head))
             {
                 res.Add(new int[3] { tail[0], tail[1], 0 });
-                int[] oldTail = tail;
-                tail = moveMap[(Direction)board[tail[0], tail[1]]](tail);
-                board[oldTail[0], oldTail[1]] = 0;
+                snakeObj.MoveTail();
+                board[tail[0], tail[1]] = 0;
+                tail = snakeObj.Tail;
+                snakeObj.Tail[2] = board[tail[0], tail[1]];
             }
             else
             {
-                int[] newFood = ValidFood();
-                if (newFood != null)
+                var nfood = ValidFood();
+                if (nfood != null)
                 {
+                    var newFood = nfood.Head;
                     res.Add(new int[3] { newFood[0], newFood[1], -1 });
                     board[newFood[0], newFood[1]] = -1;
                 }
             }
-            board[head[0], head[1]] = (int)direction;
-            head = newHead;
+            board[oldHead[0], oldHead[1]] = (int)direction;
             res.Add(new int[3] { head[0], head[1], 1 });
             board[head[0], head[1]] = 1;
             return true;
         }
         public int[,] GetMap() => (int[,])board.Clone();
-        bool OutOfBound(int[] point) => point[0] < 0 || point[0] >= row || point[1] < 0 || point[1] >= column;
-        bool InSnake(int[] point) => board[point[0], point[1]] > 0;
-        bool InEmpty(int[] point) => board[point[0], point[1]] == 0;
+        bool OutOfBound(IReadOnlyList<int> point) => point[0] < 0 || point[0] >= row || point[1] < 0 || point[1] >= column;
+        bool InSnake(IReadOnlyList<int> point) => board[point[0], point[1]] > 0;
+        bool InEmpty(IReadOnlyList<int> point) => board[point[0], point[1]] == 0;
     }
 }
