@@ -33,10 +33,15 @@ namespace Snake
         }
         void Tick(object s,ElapsedEventArgs args)
         {
-            if (!Dispatcher.Invoke(pipeline.StartPipeline))
+            Dispatcher.Invoke(() =>
             {
-                timer.Stop();
-            }
+                if (!pipeline.StartPipeline())
+                {
+                    timer.Stop();
+                    timer.Dispose();
+                    Close();
+                }
+            });
         }
     }
 }

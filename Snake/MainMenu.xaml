@@ -1,0 +1,15 @@
+﻿<Window x:Class="Snake.MainMenu"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Snake"
+        mc:Ignorable="d"
+        Title="贪吃蛇" Height="450" Width="800" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Canvas>
+
+        <Button Content="开始" Height="30" Width="58" Click="Button_Click" Canvas.Left="371" Canvas.Top="281"/>
+        <Label Content="贪吃蛇" FontSize="48" Canvas.Left="323" Canvas.Top="146"/>
+
+    </Canvas>
+</Window>
