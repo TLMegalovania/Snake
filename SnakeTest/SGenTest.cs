@@ -1,28 +1,28 @@
+using Snake;
 using System;
 using Xunit;
-using Snake;
 using Xunit.Abstractions;
 
 namespace SnakeTest
 {
     public class SGenTest
     {
-        SnakeGenerator generator;
-        ITestOutputHelper console;
-        int r, c;
+        readonly SnakeGenerator generator;
+        readonly ITestOutputHelper console;
+        readonly int r, c;
         public SGenTest(ITestOutputHelper helper)
         {
             var rand = new Random();
-            r = rand.Next(1,int.MaxValue);
-            c = rand.Next(1,int.MaxValue);
-            generator = new SnakeGenerator(r,c);
+            r = rand.Next(1, int.MaxValue);
+            c = rand.Next(1, int.MaxValue);
+            generator = new SnakeGenerator(r, c);
             console = helper;
             console.WriteLine($"Row : {r}, Column : {c}");
         }
         [Fact]
         public void GenSnakeTest()
         {
-            for(int i = 0; i < 100; i++)
+            for (int i = 0; i < 100; i++)
             {
                 GenTest();
             }

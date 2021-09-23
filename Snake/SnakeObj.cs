@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Snake
 {
@@ -12,10 +9,10 @@ namespace Snake
 
         readonly Dictionary<Direction, Func<IList<int>, int[]>> moveMap = new()
         {
-            {Direction.Down,point=>new int[3]{point[0]+1,point[1],0 } },
-            {Direction.Left,point=>new int[3]{point[0],point[1]-1,0 } },
-            {Direction.Right,point=>new int[3]{point[0],point[1]+1,0 } },
-            {Direction.Up,point=>new int[3]{point[0]-1,point[1],0 } }
+            { Direction.Down, point => new int[3] { point[0] + 1, point[1], 0 } },
+            { Direction.Left, point => new int[3] { point[0], point[1] - 1, 0 } },
+            { Direction.Right, point => new int[3] { point[0], point[1] + 1, 0 } },
+            { Direction.Up, point => new int[3] { point[0] - 1, point[1], 0 } }
         };
 
         public SnakeObj(List<int[]> points) : base(points)

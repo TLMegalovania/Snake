@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Snake
 {
@@ -13,7 +9,7 @@ namespace Snake
         public IReadOnlyList<int> Head => head;
         public IReadOnlyList<IReadOnlyList<int>> Points => points;
         protected GameObj(List<int[]> points)
-        { 
+        {
             this.points = points;
             head = points[0];
         }

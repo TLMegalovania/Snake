@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 
@@ -10,7 +6,7 @@ namespace Snake
 {
     class SnakeInput
     {
-        public Direction Next 
+        public Direction Next
         {
             get
             {
@@ -18,15 +14,15 @@ namespace Snake
                 return next;
             }
         }
-        Direction last,next;
-        Dictionary<Key, Direction> diction = new Dictionary<Key, Direction>()
+        Direction last, next;
+        readonly Dictionary<Key, Direction> diction = new Dictionary<Key, Direction>()
         {
             {Key.W,Direction.Up },
             {Key.A,Direction.Left },
             {Key.S,Direction.Down },
             {Key.D,Direction.Right }
         };
-        Dictionary<Direction, Direction> opposite = new Dictionary<Direction, Direction>()
+        readonly Dictionary<Direction, Direction> opposite = new Dictionary<Direction, Direction>()
         {
             {Direction.Down,Direction.Up },
             {Direction.Up,Direction.Down },
@@ -39,7 +35,7 @@ namespace Snake
             next = Direction.Up;
             last = Next;
         }
-        void InputFilter(object sender,KeyEventArgs args)
+        void InputFilter(object sender, KeyEventArgs args)
         {
             Key pressed = args.Key;
             if (!diction.ContainsKey(pressed)) return;

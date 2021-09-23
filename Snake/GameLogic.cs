@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Snake
 {
     class GameLogic
     {
-        SnakeGenerator sgen;
-        FoodGenerator fgen;
-        SnakeObj snakeObj;
-        FoodObj foodObj;
-        int[,] board;
-        int row, column;
+        readonly SnakeGenerator sgen;
+        readonly FoodGenerator fgen;
+        readonly SnakeObj snakeObj;
+        readonly FoodObj foodObj;
+        readonly int[,] board;
+        readonly int row, column;
+        int score;
         public GameLogic(int rowCount, int columnCount)
         {
             row = rowCount;
@@ -53,8 +50,9 @@ namespace Snake
             }
             return food;
         }
-        public bool Move(Direction direction, out IReadOnlyCollection<int[]> changedPoints)
+        public bool Move(Direction direction, out IReadOnlyCollection<int[]> changedPoints, out int score)
         {
+            score = this.score;
             var res = new List<int[]>();
             changedPoints = res.AsReadOnly();
             var oldHead = new int[2] { snakeObj.Head[0], snakeObj.Head[1] };
@@ -75,6 +73,7 @@ namespace Snake
             }
             else
             {
+                score = ++this.score;
                 var nfood = ValidFood();
                 if (nfood != null)
                 {
