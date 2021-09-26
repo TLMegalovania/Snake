@@ -7,12 +7,16 @@ namespace Snake
         readonly SnakeGenerator sgen;
         readonly FoodGenerator fgen;
         readonly SnakeObj snakeObj;
-        readonly FoodObj foodObj;
+        readonly List<FoodObj> foodObjs;
         readonly int[,] board;
         readonly int row, column;
-        int score;
+        private int score;
+        private readonly int foodCount,wallCount;
+
         public GameLogic(int rowCount, int columnCount)
         {
+            foodCount = 50;
+            wallCount = 50;
             row = rowCount;
             column = columnCount;
             board = new int[rowCount, columnCount];
@@ -23,8 +27,18 @@ namespace Snake
             {
                 board[point[0], point[1]] = 1;
             }
-            foodObj = ValidFood();
-            board[foodObj.Head[0], foodObj.Head[1]] = -1;
+            foodObjs = new(foodCount);
+            for (int i = 0; i < foodCount; i++)
+            {
+                var foodObj = ValidFood();
+                foodObjs.Add(foodObj);
+                board[foodObj.Head[0], foodObj.Head[1]] = -1;
+            }
+            for (int i = 0; i < wallCount; i++)
+            {
+                var wallObj = ValidFood();
+                board[wallObj.Head[0], wallObj.Head[1]] = -2;
+            }
         }
         FoodObj ValidFood()
         {
@@ -59,7 +73,7 @@ namespace Snake
             snakeObj.MoveHead(direction);
             var head = snakeObj.Head;
             var tail = snakeObj.Tail;
-            if (OutOfBound(head) || InSnake(head))
+            if (OutOfBound(head) || InSnake(head) || InWall(head))
             {
                 return false;
             }
@@ -71,7 +85,7 @@ namespace Snake
                 tail = snakeObj.Tail;
                 snakeObj.Tail[2] = board[tail[0], tail[1]];
             }
-            else
+            else if(InFood(head))
             {
                 score = ++this.score;
                 var nfood = ValidFood();
@@ -91,5 +105,7 @@ namespace Snake
         bool OutOfBound(IReadOnlyList<int> point) => point[0] < 0 || point[0] >= row || point[1] < 0 || point[1] >= column;
         bool InSnake(IReadOnlyList<int> point) => board[point[0], point[1]] > 0;
         bool InEmpty(IReadOnlyList<int> point) => board[point[0], point[1]] == 0;
+        bool InFood(IReadOnlyList<int> point) => board[point[0], point[1]] == -1;
+        bool InWall(IReadOnlyList<int> point) => board[point[0], point[1]] == -2;
     }
 }

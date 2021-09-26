@@ -10,6 +10,7 @@ namespace Snake
         readonly Rectangle[,] elements;
         readonly Dictionary<int, Brush> brushMap = new Dictionary<int, Brush>()
         {
+            {-2,Brushes.Black },
             {-1,Brushes.LightSkyBlue },
             {0,Brushes.Gray },
             {1,Brushes.MediumVioletRed }
