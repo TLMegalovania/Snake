@@ -22,7 +22,9 @@ namespace Snake
         {
             Dispatcher.Invoke(() =>
             {
-                if (!pipeline.StartPipeline(out int score))
+                bool contin = pipeline.StartPipeline(out int score);
+                ScoreLabel.Content = score.ToString();
+                if (!contin)
                 {
                     timer.Stop();
                     timer.Dispose();
